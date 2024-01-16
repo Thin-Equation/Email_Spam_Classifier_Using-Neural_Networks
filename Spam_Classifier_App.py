@@ -30,7 +30,7 @@ X_test_scaled = scaler.transform(X_test)
 # Convert the scaled data to torch tensors
 X_train_tensor = torch.tensor(X_train_scaled.astype(np.float32))
 y_train_tensor = torch.tensor(y_train.values.astype(np.float32))
-X_test_tensor = torch.tensor(X_test_scaled.astype(np.float32))
+X_test_tensor = torch.tensor(X_test_scaled.astype(np.float32)) # type: ignore
 y_test_tensor = torch.tensor(y_test.values.astype(np.float32))
 
 # Create TensorDatasets for the training and testing data
@@ -95,7 +95,7 @@ def main():
     selected_classifier = st.selectbox("Select Spam Classifier", list(classifier_options.keys()))
 
     # Train and evaluate the selected classifier
-    model = classifier_options[selected_classifier]
+    model = classifier_options[selected_classifier] # type: ignore
     train_and_evaluate(model)
 
     # Input features from the user
@@ -126,6 +126,7 @@ def train_and_evaluate(model):
     # Training the neural network
     num_epochs = 10
     model.train()
+    loss = np.empty
     for epoch in range(num_epochs):
         for batch_idx, (data, target) in enumerate(train_loader):
             optimizer.zero_grad()
@@ -133,7 +134,7 @@ def train_and_evaluate(model):
             loss = loss_function(output, target.view(-1, 1))
             loss.backward()
             optimizer.step()
-
+            
         # Print progress
         print('Epoch ', epoch+1, '/', num_epochs, ': Loss -', loss.item())
 
